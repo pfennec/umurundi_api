@@ -13,6 +13,7 @@ class TokenPairView(TokenObtainPairView):
     serializer_class = TokenObtainPairSerializer
 
 
+
 class AdministrateurViewSet(
                             mixins.CreateModelMixin, 
                             mixins.ListModelMixin, 
@@ -30,6 +31,22 @@ class UmurundiViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,]
     queryset = Umurundi.objects.all()
     serializer_class = UmurundiSerializer
+
+    def list(self,request, *args, **kwargs):
+
+        administrateur_yatowe = Admnistrateur.objects.get(user=request.user)
+        list_umurundi = Umurundi.objects.filter(admnistrateur=administrateur_yatowe)
+        # resultat = [
+        #     self.get_serializer(umurundi).data 
+        #     for umurundi in list_umurundi
+        # ]
+
+        resultat = []
+        for umurundi in list_umurundi:
+            data = self.get_serializer(umurundi).data
+            resultat.append(data)
+        return Response(resultat)
+
 
 class LieuDeNaissanceViewSet(viewsets.ModelViewSet):
     authentication_classes = [SessionAuthentication, JWTAuthentication]
