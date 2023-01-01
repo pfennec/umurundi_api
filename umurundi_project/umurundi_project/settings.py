@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-cy0yd&la+(o)r7g69ml2#k+qb02g5$)92gk8&y@vu6n2+x!kso
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*"] #Authoriser pour tous les adresses IP
 
 
 # Application definition
@@ -53,14 +53,14 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication"
     ),
     "DEFAULT_FILTER_BACKENDS": ("django_filters.rest_framework.DjangoFilterBackend",)
-}
+}#Configurations de Django Rest Framework
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=6),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     "AUTH_HEADER_TYPES": ("JWT",),
     "AUTH_HEADER_TYPES": ("Bearer",),
-}
+}#Configurations de Django Simple JWT
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -71,8 +71,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    "api.middlewares.DisableCSRF",
-    "corsheaders.middleware.CorsMiddleware"
+    "api.middlewares.DisableCSRF",#Irakorana na fichier middlewares.py
+    "corsheaders.middleware.CorsMiddleware" 
 ]
 
 ROOT_URLCONF = 'umurundi_project.urls'
@@ -147,4 +147,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_ALL_ORIGINS = True #Kworosha sécurité
