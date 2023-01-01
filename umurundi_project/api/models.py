@@ -24,6 +24,9 @@ class Admnistrateur(models.Model):
     user = models.OneToOneField(User, to_field="username", on_delete=models.PROTECT) #Lien avec le User par défaut de django
     role = models.CharField(max_length=60, choices=type_roles)
 
+    def __str__(self):
+        return self.user.username
+
 class Umurundi(models.Model):
     admnistrateur = models.ForeignKey("Admnistrateur", on_delete=models.PROTECT)
 
