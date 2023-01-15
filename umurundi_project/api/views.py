@@ -32,20 +32,33 @@ class UmurundiViewSet(viewsets.ModelViewSet):
     queryset = Umurundi.objects.all()
     serializer_class = UmurundiSerializer
 
-    def list(self,request, *args, **kwargs):
 
-        administrateur_yatowe = Admnistrateur.objects.get(user=request.user)
+    def get_queryset(self, *args, **kwargs):
+        administrateur_yatowe = Admnistrateur.objects.get(user=self.request.user)
         list_umurundi = Umurundi.objects.filter(admnistrateur=administrateur_yatowe)
-        # resultat = [
-        #     self.get_serializer(umurundi).data 
-        #     for umurundi in list_umurundi
-        # ]
+        return list_umurundi
 
-        resultat = []
-        for umurundi in list_umurundi:
-            data = self.get_serializer(umurundi).data
-            resultat.append(data)
-        return Response(resultat)
+
+    
+    def perform_create(self, serializer):
+        administrateur_yatowe = Admnistrateur.objects.get(user=self.request.user)
+        serializer.save(admnistrateur=administrateur_yatowe)
+
+        return Response(status=200)
+
+    def perform_update(self, serializer):
+        administrateur_yatowe = Admnistrateur.objects.get(user=self.request.user)
+        serializer.save(admnistrateur=administrateur_yatowe)
+
+    def destroy(self, request, *args, **kwargs):
+        administrateur_yatowe = Admnistrateur.objects.get(user=self.request.user)
+        umurundi_id = int(kwargs["pk"])
+        Umurundi.objects.get(admnistrateur=administrateur_yatowe, id=umurundi_id).delete()
+        
+        return Response(data={"success": "Effacé avec succès"}, status=200)
+
+        
+
 
 
 class LieuDeNaissanceViewSet(viewsets.ModelViewSet):
@@ -53,3 +66,31 @@ class LieuDeNaissanceViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated,]
     queryset = LieuDeNaissance.objects.all()
     serializer_class = LieuDeNaissanceSerializer
+
+
+    def get_queryset(self, *args, **kwargs):
+        administrateur_yatowe = Admnistrateur.objects.get(user=self.request.user)
+        list_lieu_de_naissance = LieuDeNaissance.objects.filter(admnistrateur=administrateur_yatowe)
+        return list_lieu_de_naissance
+
+
+    
+    def perform_create(self, serializer):
+        administrateur_yatowe = Admnistrateur.objects.get(user=self.request.user)
+        serializer.save(admnistrateur=administrateur_yatowe)
+
+        return Response(status=200)
+
+    def perform_update(self, serializer):
+        administrateur_yatowe = Admnistrateur.objects.get(user=self.request.user)
+        serializer.save(admnistrateur=administrateur_yatowe)
+
+    def destroy(self, request, *args, **kwargs):
+        administrateur_yatowe = Admnistrateur.objects.get(user=self.request.user)
+        lieu_de_naissance_id = int(kwargs["pk"])
+        LieuDeNaissance.objects.get(
+                                    admnistrateur=administrateur_yatowe, 
+                                    id=lieu_de_naissance_id
+                                    ).delete()
+        
+        return Response(data={"success": "Effacé avec succès"}, status=200)
